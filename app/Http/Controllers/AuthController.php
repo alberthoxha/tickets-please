@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ApiLoginRequet;
 use App\Traits\ApiResponses;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {

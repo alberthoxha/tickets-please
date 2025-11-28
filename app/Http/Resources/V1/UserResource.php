@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1;
 
+use App\Http\Resources\Api\TicketResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,6 +29,10 @@ class UserResource extends JsonResource
                         'updatedAt' => $this->updated_at,
                     ]
                 ),
+            ],
+            'includes' => TicketResource::collection($this->whenLoaded('tickets')),
+            'links' => [
+                'self' => route('users.show', ['user' => $this->id]),
             ],
         ];
     }

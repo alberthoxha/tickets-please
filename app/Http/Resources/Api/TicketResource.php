@@ -3,20 +3,22 @@
 namespace App\Http\Resources\Api;
 
 use App\Http\Resources\V1\UserResource;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TicketResource extends JsonResource
 {
+
     /**
-     * @mixin \App\Models\Ticket
+     * @mixin Ticket
      */
     public function toArray(Request $request): array
     {
         return [
             'type' => 'ticket',
             'id' => $this->id,
-            'atributes' => [
+            'attributes' => [
                 'title' => $this->title,
                 'description' => $this->when(
                     $request->routeIs(
@@ -35,17 +37,16 @@ class TicketResource extends JsonResource
                         'id' => $this->user_id,
                     ],
                     'links' => [
-                        [
-                            'self' => 'todo',
-                        ],
+                        'self' => route('users.show', ['user' => $this->user_id]),
+
                     ],
                 ],
             ],
             'includes' => [
-                new UserResource($this->user),
+                new UserResource($this->whenLoaded('user')),
             ],
             'links' => [
-                ['self' => route('tickets.show', ['ticket' => $this->id])],
+                'self' => route('tickets.show', ['ticket' => $this->id]),
             ],
         ];
     }
